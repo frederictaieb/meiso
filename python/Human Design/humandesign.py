@@ -3,7 +3,20 @@ import json
 
 from datatypes import *
 
-class Human_design : 
+class humain_design:
+	def __init__(self, type, profil, centers, definition, gates, channels, incarnation_cross):
+		self.type = type
+		self.profil = profil
+		self.centers = centers
+		self.definition = defintiion
+		self.gates = gates 
+		self.channels = channels
+		self.incarnation_cross = incarnation_cross
+
+	
+
+
+class Human_design_data : 
 
 	types = []
 	profils = []
@@ -13,6 +26,7 @@ class Human_design :
 	channels = []
 	
 	incarnation_crosses = []
+
 
 
 	def __init__(self):
@@ -63,7 +77,11 @@ class Human_design :
 		for i in range(0, len(data)):
 			num = i+1
 			name = data.at[i, 'Name']
-			center = data.at[i, 'Center']
+			c = data.at[i, 'Center']
+			for center in self.centers:
+				if center == c : 
+					break
+
 			desc = data.at[i, 'Description']
 			desc_fr = data.at[i, 'Description_FR']
 			g = Gate(num, name, desc, desc_fr, center)
@@ -91,7 +109,7 @@ class Human_design :
 			gate22 = data.at[i, 'Gate22']
 			desc = data.at[i, 'Description']
 			desc_fr = data.at[i, 'Description_FR']
-			ic = Incarnation_cross(name, gate11, gate12, gate21, gate22, desc, desc_fr)
+			ic = Incarnation_cross(name, self.gates[gate11-1], self.gates[gate12-1], self.gates[gate21-1], self.gates[gate22-1], desc, desc_fr)
 			self.incarnation_crosses.append(ic)
 
 	def fill_all(self):
@@ -99,28 +117,28 @@ class Human_design :
 		
 		print("Step1 : Filling Types", end='')
 		self.fill_types()
-		print("\t\tOK")
+		print("\t\t\t\tOK")
 		
 		print("Step2 : Filling Profils", end='')
 		self.fill_profils()
-		print("\t\tOK")
+		print("\t\t\t\tOK")
 
 		print("Step3 : Filling Centers", end='')
 		self.fill_centers()
-		print("\t\tOK")
+		print("\t\t\t\tOK")
 
 		print("Step3 : Filling Definitions", end='')
 		self.fill_definitions()
-		print("\tOK")
+		print("\t\t\tOK")
 
 		print("Step4 : Filling Gates", end='')
 		self.fill_gates()
-		print("\t\tOK")
+		print("\t\t\t\tOK")
 
 		print("Step5 : Filling Channels", end='')
 		self.fill_channels()
-		print("\tOK")
+		print("\t\t\tOK")
 
-		print("Step6 : Filling Incarnation Crosses ... ", end='')
+		print("Step6 : Filling Incarnation Crosses ", end='')
 		self.fill_incarnation_crosses()
-		print("\tOK")
+		print("\t\tOK")
