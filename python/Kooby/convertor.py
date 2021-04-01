@@ -4,17 +4,18 @@ from fileable import Fileable
 from epub_conversion.utils import open_book, convert_epub_to_lines
 
 class Convertor() : 
-	def __init__(self, kooby):
-		#super().__init__(folder, name, ext)
-		self.kooby = kooby
-		self.book = open_book(self.kooby.get_path())
+	def __init__(self, filename):
+		self.__filename = filename
+		self.book = open_book(self.filename + ".epub")
 		self.lines = convert_epub_to_lines(self.book)
-		
-		self.to_html()
-		self.to_txt()
+
+	@property
+	def filename(self):
+		return self.__filename
+	
 
 	def to_html(self):
-		output = open(self.kooby.get_path("html"), "w")
+		output = open(self.filename + ".html", "w")
 		for l in self.lines:
 			output.write(l)
 		output.close()
@@ -26,10 +27,12 @@ class Convertor() :
 		h.ignore_images =True
 		h.single_line_break = True
 
-		output = open(self.kooby.get_path("txt"), "w")
+		print("Conversion EPUB -> TXT...")
+		output = open(self.filename + ".txt", "w")
 
 		for l in self.lines:
 			output.write(h.handle(l))
 		output.close()
+		print("OK")
 		return
 

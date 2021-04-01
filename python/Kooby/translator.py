@@ -4,13 +4,13 @@ import time
 from google_trans_new import google_translator 
 
 class Translator : 
-	def __init__(self, kooby, lang_src="en", lang_tgt="fr"):
-		self.kooby = kooby
+	def __init__(self, filename, lang_src="en", lang_tgt="fr"):
 		self.lang_src = lang_src
 		self.lang_tgt = lang_tgt
+		self.__filename = filename + "-" + self.lang_tgt + ".txt"
 
 		# get lines from text file
-		f_in  = open(self.kooby.get_path("txt"), "r")
+		f_in  = open(filename + ".txt", "r")
 		self.lines = lines = f_in.readlines()
 		f_in.close()
 
@@ -18,7 +18,10 @@ class Translator :
 		self.paragraphs=[]
 		#print(self.lines[0])
 		self.lines_to_paragraph()
-		self.translate()
+	
+	@property
+	def filename(self):
+			return self.__filename
 
 	def clean(self):
 		return
@@ -53,10 +56,10 @@ class Translator :
 		return (str(self.paragraphs))
 			
 
-	def translate(self):
+	def google_translate(self):
 		translator = google_translator()
-
-		f = open(self.kooby.get_path('txt') + "-fr", 'w')
+		print("Translation " + self.lang_src + " -> " + self.lang_tgt + "... ")
+		f = open(self.filename, 'w')
 
 		for line in self.paragraphs:
 			translated_text = translator.translate(line, lang_src=self.lang_src, lang_tgt=self.lang_tgt)
@@ -64,3 +67,4 @@ class Translator :
 			f.write("\n\n")
 
 		f.close()
+		print("OK")
